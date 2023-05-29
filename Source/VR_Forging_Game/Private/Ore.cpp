@@ -1,24 +1,34 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
+#include "../Public/Ore.h"
 
-#include "Ore.h"
-
-// Sets default values
 AOre::AOre()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	VisualMesh->SetupAttachment(RootComponent);
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/Game/Mesh/ingot.ingot"));
 
+	if (CubeVisualAsset.Succeeded())
+	{
+		VisualMesh->SetStaticMesh(CubeVisualAsset.Object);
+		VisualMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	}*/
 }
 
-// Called when the game starts or when spawned
+AOre::AOre(FString newType, float newCooktime, int newYield)
+{
+	type=newType;
+	cookTime=newCooktime;
+	yield=newYield;
+	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	VisualMesh->SetupAttachment(RootComponent);
+}
+
 void AOre::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void AOre::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

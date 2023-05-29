@@ -14,7 +14,13 @@ class VR_FORGING_GAME_API AIngot : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AIngot();
-
+	AIngot(FString newType);
+	FString type="Iron";
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* VisualMesh;
+	UPROPERTY(EditAnywhere)
+	class UMaterial* material;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
