@@ -23,34 +23,6 @@ AIngot::AIngot()
 	VisualMesh->SetSimulatePhysics(true);
 }
 
-AIngot::AIngot(FString newType)
-{
-	type=newType;
-	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	/*FString materialName;
-	switch (type)
-	{
-		case "Iron":
-			materialName="/Game/Game/Material/M_Iron.M_Iron";
-			break;
-		case "Copper":
-			materialName="/Game/Game/Material/M_Iron.M_Iron";
-			break;
-	}*/
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> FoundMesh(TEXT("/Game/Game/Mesh/ingot.ingot"));
-	if (FoundMesh.Succeeded())
-	{
-		VisualMesh->SetStaticMesh(FoundMesh.Object);
-	}
-	static ConstructorHelpers::FObjectFinder<UMaterial> FoundMaterial(TEXT("/Game/Game/Material/M_Iron.M_Iron"));
-	if (FoundMaterial.Succeeded())
-	{
-		material = FoundMaterial.Object;
-	}
-	VisualMesh->SetMaterial(0, material);
-	VisualMesh->SetSimulatePhysics(true);
-}
-
 // Called when the game starts or when spawned
 void AIngot::BeginPlay()
 {
@@ -61,6 +33,31 @@ void AIngot::BeginPlay()
 void AIngot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
+
+void AIngot::InitializeObject(FString newType)
+{
+	type=newType;
+	FString materialName;
+	switch (oreType.Find(type))
+	{
+	case 0:
+		materialName="/Game/Game/Material/M_Iron.M_Iron";
+		break;
+	case 1:
+		materialName="/Game/Game/Material/M_Copper.M_Copper";
+		break;
+	default:
+		materialName="/Game/Game/Material/M_Iron.M_Iron";
+		break;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("%d"),oreType.Find(type));
+	//UMaterial* ConeAsset = LoadObject<UMaterial>(nullptr, (TEXT("%s"), *materialName));
+	UMaterial* ConeAsset = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), nullptr, (TEXT("%s"), *materialName)));
+	if (ConeAsset)
+	{
+		VisualMesh->SetMaterial(0, ConeAsset);
+	}
+}
+
 
