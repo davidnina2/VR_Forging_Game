@@ -9,7 +9,7 @@ AIngot::AIngot()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> FoundMesh(TEXT("/Game/Game/Mesh/ingot.ingot"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> FoundMesh(TEXT("/Game/Game/Mesh/Ingot/ingot.ingot"));
 	if (FoundMesh.Succeeded())
 	{
 		VisualMesh->SetStaticMesh(FoundMesh.Object);
@@ -51,8 +51,6 @@ void AIngot::InitializeObject(FString newType)
 		materialName="/Game/Game/Material/M_Iron.M_Iron";
 		break;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("%d"),oreType.Find(type));
-	//UMaterial* ConeAsset = LoadObject<UMaterial>(nullptr, (TEXT("%s"), *materialName));
 	UMaterial* ConeAsset = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), nullptr, (TEXT("%s"), *materialName)));
 	if (ConeAsset)
 	{
